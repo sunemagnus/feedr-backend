@@ -1,30 +1,36 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Net.Http;
 
-namespace feedr_backend
+namespace feedr_backend;
+
+public class Function1
 {
-    public class Function1
+    private readonly ILogger<Function1> _logger;
+    private readonly HttpClient _httpClient = new HttpClient();
+
+    public Function1(ILogger<Function1> logger)
     {
-        private readonly ILogger _logger;
+        _logger = logger;
+    }
 
-        public Function1(ILoggerFactory loggerFactory)
+    [Function("PostFeed")]
+    public async Task<IActionResult> Run(
+    [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+    {
+        var feedrService = Environment.GetEnvironmentVariable("FeedrService_Url");
+
+        var response = await _httpClient.GetAsync(feedrService);
+        var body = await response.Content.ReadAsStringAsync();
+
+        return new ContentResult
         {
-            _logger = loggerFactory.CreateLogger<Function1>();
-        }
-
-        [Function("Function1")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
-        {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-            response.WriteString("Welcome to Azure Functions!");
-
-            return response;
-        }
+            Content = body,
+            ContentType = "application/json",
+            StatusCode = 200
+        };
     }
 }
