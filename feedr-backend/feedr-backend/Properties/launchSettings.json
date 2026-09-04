@@ -2,8 +2,7 @@
   "profiles": {
     "feedr_backend": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7019",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7071"
     }
   }
 }
