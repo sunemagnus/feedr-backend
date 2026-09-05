@@ -43,7 +43,7 @@ public class FeedFunction
 
         await _feedrServiceApiClient.PostFeed(feed);
 
-        var message = String.Format($"Rating: {feed.Rating}, Description: {feed.Description}");
+        //var message = String.Format($"Rating: {feed.Rating}, Description: {feed.Description}");
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 

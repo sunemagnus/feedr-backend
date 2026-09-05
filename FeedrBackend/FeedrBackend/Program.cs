@@ -13,7 +13,7 @@ builder.ConfigureFunctionsWebApplication();
 
 builder.Services.AddHttpClient<IFeedrServiceApiClient, FeedrServiceApiClient>("FeedrService", c =>
 {
-    c.BaseAddress = new Uri("http://localhost:7071/api/postFeed");
+    c.BaseAddress = new Uri("http://localhost:7072/");
 });
 
 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
