@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "feedr_backend": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7071"
-    }
-  }
-}
