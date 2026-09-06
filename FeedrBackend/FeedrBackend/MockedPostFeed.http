@@ -1,0 +1,15 @@
+﻿POST http://localhost:7071/api/postFeed
+Content-Type: application/json
+# x-functions-key: {{funcKey}}
+
+{
+  "name": "Central Park Bench",
+  "description": "Lovely place to feed",
+  "rating": 4,
+  "dateTime": "2026-09-06T12:00:00Z",
+  "geoCoordinate": {
+    "latitude": 1,
+    "longitude": 2,
+    "altitude": 3
+  }
+}

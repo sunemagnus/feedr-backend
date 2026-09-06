@@ -6,6 +6,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text.Json.Nodes;
 
 namespace FeedrBackend.Functions.FeedrService;
 
@@ -24,24 +25,20 @@ public class FeedFunction
 
 
     [Function("PostFeed")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", "post",
-        Route = "postFeed")] HttpRequestData req, FeedModel feed,
-        FunctionContext executionContext)
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post",
+        Route = "postFeed")] HttpRequestData req, FunctionContext executionContext)
     {
-
-        feed = new FeedModel
-        {
-            Name = "FirstFeed",
-            Description = "Lovely place to feed",
-            Rating = 4,
-            DateTime = DateTime.UtcNow,
-            GeoCoordinate = new Coordinate(1, 2, 3)
-        };
+        var feed = await req.ReadFromJsonAsync<FeedModel>();
 
         var logger = executionContext.GetLogger("HttpTrigger1");
         logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        await _feedrServiceApiClient.PostFeed(feed);
+        var res = await _feedrServiceApiClient.PostFeed(feed);
+
+        if (res.IsSuccessStatusCode)
+        {
+            logger.LogInformation("Success received from feedr-service.");
+        }
 
         //var message = String.Format($"Rating: {feed.Rating}, Description: {feed.Description}");
         var response = req.CreateResponse(HttpStatusCode.OK);
