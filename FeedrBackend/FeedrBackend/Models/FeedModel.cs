@@ -15,11 +15,15 @@ namespace FeedrBackend.Models
     }
 
     public class Coordinate { 
-        public Coordinate(long x, long y, long z) { }
-
-        private long x {  get; set; } 
-        private long y { get; set; }
-        private long z { get; set; }
+        public long Latitude {  get; set; } 
+        public long Longitude { get; set; }
+        public long Altitude { get; set; }
+        
+        public Coordinate(long latitude, long longitude, long altitude) {
+            Latitude = latitude;
+            Longitude = longitude;
+            Altitude = altitude;
+        }
     }
 
 }
